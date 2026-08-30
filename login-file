@@ -1,4 +1,9 @@
 A login text file stores user credentials (like usernames and passwords) in a plain text format, usually separated by a colon or comma, for simple authentication programs.
 How It WorksFormat: Each line typically holds one user account, formatted like username:password.
 Reading: A program opens the text file, reads it line by line, and splits the text into username and password variables.
-Comparison: The program compares the typed input from a user against the values found in the text file to grant or deny access.
+
+
+
+
+
+what is the main purpose to learn the DevOps technology tool.
