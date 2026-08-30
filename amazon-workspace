@@ -9,3 +9,12 @@ Cmd: git merge <branch-name>
 Git rebase moves or replays the commits of one branch on top of another branch, resulting in a cleaner and linear commit history. However, it rewrites the commit history and creates new commit IDs.
 Cmd: git rebase <
 
+
+
+
+
+
+
+
+
+
