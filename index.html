@@ -1,0 +1,2098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>StayNest - Room Booking</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --dark: #111827;
+    --text: #1f2937;
+    --muted: #6b7280;
+    --bg: #f6f8fc;
+    --white: #ffffff;
+    --border: #e5e7eb;
+    --green: #16a34a;
+    --orange: #f59e0b;
+}
+
+body {
+    font-family: "Inter", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar {
+    height: 72px;
+    background: white;
+    border-bottom: 1px solid var(--border);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 6%;
+
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: 800;
+    color: var(--dark);
+}
+
+.logo span {
+    color: var(--primary);
+}
+
+.nav-links {
+    display: flex;
+    gap: 28px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #4b5563;
+    font-size: 14px;
+}
+
+.nav-links a:hover {
+    color: var(--primary);
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.login-btn {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.signup-btn {
+    border: none;
+    background: var(--primary);
+    color: white;
+    padding: 10px 18px;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+    min-height: 440px;
+
+    background:
+        linear-gradient(
+            rgba(8, 15, 30, .55),
+            rgba(8, 15, 30, .7)
+        ),
+        url("https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1800&q=85")
+        center / cover;
+
+    display: flex;
+    align-items: center;
+
+    padding: 70px 6%;
+}
+
+.hero-content {
+    width: 100%;
+    max-width: 1100px;
+    margin: auto;
+    color: white;
+}
+
+.hero h1 {
+    font-size: clamp(40px, 6vw, 64px);
+    max-width: 700px;
+    line-height: 1.08;
+    margin-bottom: 18px;
+}
+
+.hero p {
+    max-width: 600px;
+    line-height: 1.7;
+    color: #e5e7eb;
+}
+
+/* SEARCH PANEL */
+
+.search-panel {
+    margin-top: 35px;
+
+    background: white;
+    padding: 10px;
+
+    border-radius: 12px;
+
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr auto;
+
+    box-shadow: 0 15px 50px rgba(0,0,0,.25);
+}
+
+.search-item {
+    padding: 10px 18px;
+    border-right: 1px solid var(--border);
+}
+
+.search-item label {
+    display: block;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.search-item input,
+.search-item select {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 14px;
+    color: var(--text);
+}
+
+.search-btn {
+    border: none;
+    background: var(--primary);
+    color: white;
+
+    padding: 0 25px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.search-btn:hover {
+    background: var(--primary-dark);
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.container {
+    width: 88%;
+    max-width: 1400px;
+    margin: auto;
+}
+
+.section {
+    padding: 45px 0;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 25px;
+}
+
+.section-header h2 {
+    font-size: 27px;
+}
+
+.section-header p {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+/* =========================
+   FILTERS
+========================= */
+
+.filter-area {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.filter-btn {
+    background: white;
+    border: 1px solid var(--border);
+
+    padding: 9px 16px;
+
+    border-radius: 20px;
+
+    cursor: pointer;
+
+    color: #4b5563;
+    font-size: 13px;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+/* =========================
+   ROOMS GRID
+========================= */
+
+.rooms {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 22px;
+}
+
+.room-card {
+    background: white;
+
+    border: 1px solid var(--border);
+
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    transition: .25s;
+
+    position: relative;
+}
+
+.room-card:hover {
+    transform: translateY(-5px);
+
+    box-shadow:
+        0 12px 35px rgba(0,0,0,.08);
+}
+
+/* IMAGE */
+
+.room-image {
+    height: 220px;
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+.room-image img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    transition: .4s;
+}
+
+.room-card:hover .room-image img {
+    transform: scale(1.05);
+}
+
+.favorite {
+    position: absolute;
+
+    top: 12px;
+    right: 12px;
+
+    width: 36px;
+    height: 36px;
+
+    border-radius: 50%;
+
+    border: none;
+
+    background: rgba(255,255,255,.95);
+
+    cursor: pointer;
+
+    color: #555;
+}
+
+.favorite.active {
+    color: #ef4444;
+}
+
+.room-badge {
+    position: absolute;
+
+    left: 12px;
+    top: 12px;
+
+    background: var(--green);
+
+    color: white;
+
+    padding: 6px 9px;
+
+    border-radius: 5px;
+
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
+/* INFO */
+
+.room-info {
+    padding: 16px;
+}
+
+.room-location {
+    color: var(--muted);
+
+    font-size: 12px;
+
+    margin-bottom: 7px;
+}
+
+.room-info h3 {
+    font-size: 17px;
+
+    margin-bottom: 8px;
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    font-size: 12px;
+
+    margin-bottom: 13px;
+}
+
+.rating i {
+    color: var(--orange);
+}
+
+.rating span {
+    color: var(--muted);
+}
+
+.features {
+    display: flex;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+
+    color: var(--muted);
+
+    font-size: 11px;
+
+    padding-bottom: 14px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.features span {
+    display: flex;
+
+    align-items: center;
+
+    gap: 5px;
+}
+
+.room-bottom {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-top: 14px;
+}
+
+.price strong {
+    font-size: 20px;
+}
+
+.price span {
+    display: block;
+
+    color: var(--muted);
+
+    font-size: 10px;
+}
+
+.view-btn {
+    border: none;
+
+    background: #eff6ff;
+
+    color: var(--primary);
+
+    padding: 9px 13px;
+
+    border-radius: 6px;
+
+    cursor: pointer;
+
+    font-weight: 600;
+
+    font-size: 12px;
+}
+
+.view-btn:hover {
+    background: var(--primary);
+    color: white;
+}
+
+/* =========================
+   BOOKING DRAWER
+========================= */
+
+.overlay {
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0,0,0,.55);
+
+    display: none;
+
+    z-index: 200;
+}
+
+.overlay.show {
+    display: block;
+}
+
+.booking-drawer {
+    position: fixed;
+
+    right: -480px;
+    top: 0;
+
+    width: 460px;
+
+    max-width: 100%;
+
+    height: 100vh;
+
+    background: white;
+
+    z-index: 300;
+
+    transition: .3s;
+
+    overflow-y: auto;
+
+    padding: 25px;
+}
+
+.booking-drawer.show {
+    right: 0;
+}
+
+.drawer-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 25px;
+}
+
+.drawer-header button {
+    width: 35px;
+    height: 35px;
+
+    border: none;
+
+    background: #f3f4f6;
+
+    border-radius: 50%;
+
+    cursor: pointer;
+}
+
+/* BOOKING ROOM */
+
+.booking-room {
+    display: flex;
+
+    gap: 12px;
+
+    padding-bottom: 20px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.booking-room img {
+    width: 100px;
+    height: 75px;
+
+    object-fit: cover;
+
+    border-radius: 7px;
+}
+
+.booking-room h3 {
+    font-size: 15px;
+
+    margin-bottom: 6px;
+}
+
+.booking-room p {
+    color: var(--muted);
+
+    font-size: 11px;
+}
+
+/* FORM */
+
+.form-group {
+    margin-top: 20px;
+}
+
+.form-group label {
+    display: block;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+
+    border: 1px solid var(--border);
+
+    padding: 12px;
+
+    border-radius: 7px;
+
+    outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: var(--primary);
+}
+
+/* GUEST */
+
+.guest-box {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    border: 1px solid var(--border);
+
+    padding: 12px;
+
+    border-radius: 7px;
+}
+
+.guest-controls {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+.guest-controls button {
+    width: 28px;
+    height: 28px;
+
+    border: 1px solid var(--border);
+
+    background: white;
+
+    border-radius: 50%;
+
+    cursor: pointer;
+}
+
+/* SUMMARY */
+
+.booking-summary {
+    margin-top: 25px;
+
+    border-top: 1px solid var(--border);
+
+    padding-top: 18px;
+}
+
+.summary-row {
+    display: flex;
+
+    justify-content: space-between;
+
+    padding: 9px 0;
+
+    font-size: 13px;
+}
+
+.summary-row span:last-child {
+    font-weight: 600;
+}
+
+.total-row {
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-top: 12px;
+
+    padding-top: 15px;
+
+    border-top: 1px solid var(--border);
+
+    font-size: 19px;
+
+    font-weight: 800;
+}
+
+.confirm-booking {
+    width: 100%;
+
+    border: none;
+
+    background: var(--primary);
+
+    color: white;
+
+    padding: 14px;
+
+    border-radius: 7px;
+
+    margin-top: 20px;
+
+    cursor: pointer;
+
+    font-weight: 700;
+}
+
+.confirm-booking:hover {
+    background: var(--primary-dark);
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal {
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0,0,0,.65);
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    z-index: 500;
+
+    padding: 20px;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-card {
+    width: 420px;
+
+    max-width: 100%;
+
+    background: white;
+
+    border-radius: 15px;
+
+    padding: 30px;
+
+    text-align: center;
+}
+
+.success-icon {
+    width: 65px;
+    height: 65px;
+
+    margin: auto auto 18px;
+
+    background: #dcfce7;
+
+    color: var(--green);
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 28px;
+}
+
+.modal-card h2 {
+    margin-bottom: 10px;
+}
+
+.modal-card p {
+    color: var(--muted);
+
+    font-size: 13px;
+
+    line-height: 1.7;
+}
+
+.booking-id {
+    background: #f3f4f6;
+
+    padding: 13px;
+
+    border-radius: 7px;
+
+    margin: 20px 0;
+
+    font-weight: 700;
+
+    color: var(--primary);
+}
+
+.close-modal {
+    width: 100%;
+
+    border: none;
+
+    background: var(--primary);
+
+    color: white;
+
+    padding: 12px;
+
+    border-radius: 7px;
+
+    cursor: pointer;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+    background: #111827;
+
+    color: #9ca3af;
+
+    padding: 35px;
+
+    text-align: center;
+
+    font-size: 12px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:1100px) {
+
+    .rooms {
+        grid-template-columns:
+            repeat(3,1fr);
+    }
+
+    .search-panel {
+        grid-template-columns:
+            1fr 1fr;
+
+        gap: 5px;
+    }
+
+    .search-btn {
+        padding: 13px;
+    }
+}
+
+@media(max-width:800px) {
+
+    .nav-links {
+        display: none;
+    }
+
+    .rooms {
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .hero {
+        padding: 55px 5%;
+    }
+}
+
+@media(max-width:550px) {
+
+    .rooms {
+        grid-template-columns: 1fr;
+    }
+
+    .search-panel {
+        grid-template-columns: 1fr;
+    }
+
+    .search-item {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .hero h1 {
+        font-size: 40px;
+    }
+
+    .nav-actions .login-btn {
+        display: none;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+
+<!-- =========================
+     NAVBAR
+========================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        Stay<span>Nest</span>
+    </div>
+
+    <div class="nav-links">
+        <a href="#">Home</a>
+        <a href="#rooms">Rooms</a>
+        <a href="#">Deals</a>
+        <a href="#">My Bookings</a>
+    </div>
+
+    <div class="nav-actions">
+
+        <button class="login-btn">
+            Login
+        </button>
+
+        <button class="signup-btn">
+            Sign Up
+        </button>
+
+    </div>
+
+</nav>
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="hero">
+
+<div class="hero-content">
+
+    <h1>
+        Find your perfect
+        <br>
+        <span>place to stay.</span>
+    </h1>
+
+    <p>
+        Discover beautiful rooms, compare prices and
+        book your next stay with confidence.
+    </p>
+
+
+    <div class="search-panel">
+
+        <div class="search-item">
+
+            <label>
+                <i class="fa-solid fa-location-dot"></i>
+                Location
+            </label>
+
+            <input
+                id="locationSearch"
+                type="text"
+                placeholder="City or hotel"
+            >
+
+        </div>
+
+
+        <div class="search-item">
+
+            <label>
+                Check In
+            </label>
+
+            <input
+                type="date"
+                id="checkIn"
+            >
+
+        </div>
+
+
+        <div class="search-item">
+
+            <label>
+                Check Out
+            </label>
+
+            <input
+                type="date"
+                id="checkOut"
+            >
+
+        </div>
+
+
+        <div class="search-item">
+
+            <label>
+                Guests
+            </label>
+
+            <select id="heroGuests">
+
+                <option value="1">
+                    1 Guest
+                </option>
+
+                <option value="2">
+                    2 Guests
+                </option>
+
+                <option value="3">
+                    3 Guests
+                </option>
+
+                <option value="4">
+                    4 Guests
+                </option>
+
+                <option value="5">
+                    5 Guests
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <button
+            class="search-btn"
+            onclick="searchRooms()">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+            Search
+
+        </button>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     ROOMS
+========================= -->
+
+<section class="section" id="rooms">
+
+<div class="container">
+
+    <div class="section-header">
+
+        <div>
+
+            <h2>
+                Popular stays
+            </h2>
+
+            <p>
+                Hand-picked rooms for your next trip
+            </p>
+
+        </div>
+
+        <span id="roomCount">
+            8 properties
+        </span>
+
+    </div>
+
+
+    <div class="filter-area">
+
+        <button
+            class="filter-btn active"
+            onclick="filterRooms('all',this)">
+            All
+        </button>
+
+        <button
+            class="filter-btn"
+            onclick="filterRooms('Standard',this)">
+            Standard
+        </button>
+
+        <button
+            class="filter-btn"
+            onclick="filterRooms('Deluxe',this)">
+            Deluxe
+        </button>
+
+        <button
+            class="filter-btn"
+            onclick="filterRooms('Suite',this)">
+            Suites
+        </button>
+
+        <button
+            class="filter-btn"
+            onclick="filterRooms('Budget',this)">
+            Budget
+        </button>
+
+    </div>
+
+
+    <div
+        class="rooms"
+        id="roomsGrid">
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     OVERLAY
+========================= -->
+
+<div
+    class="overlay"
+    id="overlay"
+    onclick="closeDrawer()">
+</div>
+
+
+<!-- =========================
+     BOOKING DRAWER
+========================= -->
+
+<div
+    class="booking-drawer"
+    id="bookingDrawer">
+
+    <div class="drawer-header">
+
+        <h2>
+            Book Your Stay
+        </h2>
+
+        <button onclick="closeDrawer()">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+    </div>
+
+
+    <div
+        class="booking-room"
+        id="bookingRoom">
+    </div>
+
+
+    <div class="form-group">
+
+        <label>
+            Check-in
+        </label>
+
+        <input
+            type="date"
+            id="drawerCheckIn"
+            onchange="calculateBooking()"
+        >
+
+    </div>
+
+
+    <div class="form-group">
+
+        <label>
+            Check-out
+        </label>
+
+        <input
+            type="date"
+            id="drawerCheckOut"
+            onchange="calculateBooking()"
+        >
+
+    </div>
+
+
+    <div class="form-group">
+
+        <label>
+            Guests
+        </label>
+
+        <div class="guest-box">
+
+            <span>
+                Guests
+            </span>
+
+            <div class="guest-controls">
+
+                <button onclick="changeGuests(-1)">
+                    −
+                </button>
+
+                <strong id="guestCount">
+                    2
+                </strong>
+
+                <button onclick="changeGuests(1)">
+                    +
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="booking-summary">
+
+        <div class="summary-row">
+
+            <span>
+                Room price
+            </span>
+
+            <span id="roomPrice">
+                ₹0
+            </span>
+
+        </div>
+
+
+        <div class="summary-row">
+
+            <span>
+                Number of nights
+            </span>
+
+            <span id="nights">
+                1
+            </span>
+
+        </div>
+
+
+        <div class="summary-row">
+
+            <span>
+                Taxes & fees
+            </span>
+
+            <span id="taxes">
+                ₹0
+            </span>
+
+        </div>
+
+
+        <div class="total-row">
+
+            <span>
+                Total
+            </span>
+
+            <span id="totalPrice">
+                ₹0
+            </span>
+
+        </div>
+
+
+        <button
+            class="confirm-booking"
+            onclick="confirmBooking()">
+
+            Confirm Booking
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     CONFIRMATION MODAL
+========================= -->
+
+<div
+    class="modal"
+    id="confirmationModal">
+
+    <div class="modal-card">
+
+        <div class="success-icon">
+
+            <i class="fa-solid fa-check"></i>
+
+        </div>
+
+        <h2>
+            Booking Confirmed!
+        </h2>
+
+        <p>
+            Your room has been successfully reserved.
+        </p>
+
+
+        <div class="booking-id">
+
+            Booking ID:
+            ST<span id="bookingId"></span>
+
+        </div>
+
+
+        <p id="confirmationDetails">
+        </p>
+
+
+        <button
+            class="close-modal"
+            onclick="closeConfirmation()">
+
+            Done
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<footer>
+
+    © 2026 StayNest
+    · Find your perfect stay
+
+</footer>
+
+
+<script>
+
+/* =========================
+   ROOM DATA
+========================= */
+
+const rooms = [
+
+{
+    name: "Luxury Ocean View",
+    location: "Goa, India",
+    type: "Suite",
+    rating: 4.9,
+    reviews: 328,
+    price: 6800,
+    badge: "Top Rated",
+
+    image:
+    "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=900&q=80",
+
+    features: [
+        "2 Guests",
+        "King Bed",
+        "Wi-Fi"
+    ]
+},
+
+{
+    name: "Modern City Deluxe",
+    location: "Bengaluru, India",
+    type: "Deluxe",
+    rating: 4.7,
+    reviews: 214,
+    price: 4200,
+    badge: "Popular",
+
+    image:
+    "https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=900&q=80",
+
+    features: [
+        "2 Guests",
+        "King Bed",
+        "Breakfast"
+    ]
+},
+
+{
+    name: "Classic Comfort Room",
+    location: "Hyderabad, India",
+    type: "Standard",
+    rating: 4.5,
+    reviews: 182,
+    price: 2900,
+    badge: "",
+
+    image:
+    "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=900&q=80",
+
+    features: [
+        "2 Guests",
+        "Queen Bed",
+        "Wi-Fi"
+    ]
+},
+
+{
+    name: "Royal Grand Suite",
+    location: "Mumbai, India",
+    type: "Suite",
+    rating: 4.9,
+    reviews: 441,
+    price: 8500,
+    badge: "Luxury",
+
+    image:
+    "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=900&q=80",
+
+    features: [
+        "4 Guests",
+        "King Bed",
+        "Pool"
+    ]
+},
+
+{
+    name: "Budget Smart Stay",
+    location: "Chennai, India",
+    type: "Budget",
+    rating: 4.2,
+    reviews: 119,
+    price: 1600,
+    badge: "Best Value",
+
+    image:
+    "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=900&q=80",
+
+    features: [
+        "2 Guests",
+        "Queen Bed",
+        "Wi-Fi"
+    ]
+},
+
+{
+    name: "Premium Garden Room",
+    location: "Pune, India",
+    type: "Deluxe",
+    rating: 4.6,
+    reviews: 205,
+    price: 3900,
+    badge: "",
+
+    image:
+    "https://images.unsplash.com/photo-1560185008-b033106af5c3?auto=format&fit=crop&w=900&q=80",
+
+    features: [
+        "3 Guests",
+        "King Bed",
+        "Garden"
+    ]
+},
+
+{
+    name: "Minimalist Studio",
+    location: "Delhi, India",
+    type: "Standard",
+    rating: 4.3,
+    reviews: 96,
+    price: 2400,
+    badge: "",
+
+    image:
+    "https://images.unsplash.com/photo-1560185127-6a8c5b1d2f2a?auto=format&fit=crop&w=900&q=80",
+
+    features: [
+        "2 Guests",
+        "Queen Bed",
+        "Wi-Fi"
+    ]
+},
+
+{
+    name: "Executive Business Suite",
+    location: "Bengaluru, India",
+    type: "Deluxe",
+    rating: 4.8,
+    reviews: 276,
+    price: 5200,
+    badge: "Business",
+
+    image:
+    "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=900&q=80",
+
+    features: [
+        "3 Guests",
+        "King Bed",
+        "Workspace"
+    ]
+}
+
+];
+
+
+let selectedRoom = null;
+
+let guests = 2;
+
+let currentNights = 1;
+
+
+/* =========================
+   DISPLAY ROOMS
+========================= */
+
+function displayRooms(list) {
+
+    const grid =
+        document.getElementById("roomsGrid");
+
+    grid.innerHTML = "";
+
+    document.getElementById("roomCount")
+        .textContent =
+        `${list.length} properties`;
+
+
+    if(list.length === 0) {
+
+        grid.innerHTML = `
+            <div style="
+                grid-column:1/-1;
+                text-align:center;
+                padding:60px;
+                color:#6b7280;
+            ">
+                <i class="fa-solid fa-hotel"
+                   style="font-size:35px;margin-bottom:15px">
+                </i>
+
+                <h3>No rooms found</h3>
+
+                <p>
+                    Try another location or room type.
+                </p>
+            </div>
+        `;
+
+        return;
+    }
+
+
+    list.forEach((room,index) => {
+
+        const card =
+            document.createElement("div");
+
+        card.className = "room-card";
+
+
+        card.innerHTML = `
+
+            <div class="room-image">
+
+                <img src="${room.image}">
+
+                ${
+                    room.badge
+                    ?
+                    `<div class="room-badge">
+                        ${room.badge}
+                    </div>`
+                    :
+                    ""
+                }
+
+                <button
+                    class="favorite"
+                    onclick="toggleFavorite(this,event)">
+
+                    <i class="fa-regular fa-heart"></i>
+
+                </button>
+
+            </div>
+
+
+            <div class="room-info">
+
+                <div class="room-location">
+
+                    <i class="fa-solid fa-location-dot"></i>
+
+                    ${room.location}
+
+                </div>
+
+
+                <h3>
+                    ${room.name}
+                </h3>
+
+
+                <div class="rating">
+
+                    <i class="fa-solid fa-star"></i>
+
+                    <strong>
+                        ${room.rating}
+                    </strong>
+
+                    <span>
+                        (${room.reviews} reviews)
+                    </span>
+
+                </div>
+
+
+                <div class="features">
+
+                    ${room.features.map(feature => `
+                        <span>
+                            <i class="fa-solid fa-check"></i>
+                            ${feature}
+                        </span>
+                    `).join("")}
+
+                </div>
+
+
+                <div class="room-bottom">
+
+                    <div class="price">
+
+                        <strong>
+                            ₹${room.price.toLocaleString()}
+                        </strong>
+
+                        <span>
+                            per night + taxes
+                        </span>
+
+                    </div>
+
+
+                    <button
+                        class="view-btn"
+                        onclick="openBooking(${index})">
+
+                        Book Room
+
+                    </button>
+
+                </div>
+
+            </div>
+        `;
+
+
+        grid.appendChild(card);
+
+    });
+
+}
+
+
+/* =========================
+   INITIAL LOAD
+========================= */
+
+displayRooms(rooms);
+
+
+/* =========================
+   FILTER
+========================= */
+
+function filterRooms(type,button) {
+
+    document
+        .querySelectorAll(".filter-btn")
+        .forEach(btn =>
+            btn.classList.remove("active")
+        );
+
+    button.classList.add("active");
+
+
+    if(type === "all") {
+
+        displayRooms(rooms);
+
+    } else {
+
+        displayRooms(
+            rooms.filter(room =>
+                room.type === type
+            )
+        );
+
+    }
+
+}
+
+
+/* =========================
+   SEARCH
+========================= */
+
+function searchRooms() {
+
+    const search =
+        document
+        .getElementById("locationSearch")
+        .value
+        .toLowerCase()
+        .trim();
+
+
+    const filtered =
+        rooms.filter(room =>
+            room.location
+                .toLowerCase()
+                .includes(search)
+            ||
+            room.name
+                .toLowerCase()
+                .includes(search)
+        );
+
+
+    displayRooms(filtered);
+
+
+    document
+        .getElementById("rooms")
+        .scrollIntoView({
+            behavior:"smooth"
+        });
+
+}
+
+
+/* =========================
+   FAVORITE
+========================= */
+
+function toggleFavorite(button,event) {
+
+    event.stopPropagation();
+
+    button.classList.toggle("active");
+
+    const icon =
+        button.querySelector("i");
+
+    icon.classList.toggle(
+        "fa-regular"
+    );
+
+    icon.classList.toggle(
+        "fa-solid"
+    );
+
+}
+
+
+/* =========================
+   OPEN BOOKING
+========================= */
+
+function openBooking(index) {
+
+    /*
+       Because filtered arrays can change indexes,
+       use the room name from displayed card index.
+    */
+
+    const allCards =
+        document.querySelectorAll(".room-card");
+
+    const card =
+        allCards[index];
+
+    if(!card) {
+
+        selectedRoom = rooms[index];
+
+    } else {
+
+        const title =
+            card.querySelector("h3").textContent.trim();
+
+        selectedRoom =
+            rooms.find(room =>
+                room.name === title
+            );
+
+    }
+
+
+    if(!selectedRoom) return;
+
+
+    document
+        .getElementById("bookingRoom")
+        .innerHTML = `
+
+        <img src="${selectedRoom.image}">
+
+        <div>
+
+            <h3>
+                ${selectedRoom.name}
+            </h3>
+
+            <p>
+                ${selectedRoom.location}
+            </p>
+
+            <p>
+                ⭐ ${selectedRoom.rating}
+            </p>
+
+        </div>
+
+    `;
+
+
+    document
+        .getElementById("drawerCheckIn")
+        .value =
+        document.getElementById("checkIn").value;
+
+
+    document
+        .getElementById("drawerCheckOut")
+        .value =
+        document.getElementById("checkOut").value;
+
+
+    guests =
+        parseInt(
+            document
+            .getElementById("heroGuests")
+            .value
+        ) || 2;
+
+
+    document
+        .getElementById("guestCount")
+        .textContent = guests;
+
+
+    document
+        .getElementById("overlay")
+        .classList.add("show");
+
+
+    document
+        .getElementById("bookingDrawer")
+        .classList.add("show");
+
+
+    calculateBooking();
+
+}
+
+
+/* =========================
+   CLOSE DRAWER
+========================= */
+
+function closeDrawer() {
+
+    document
+        .getElementById("overlay")
+        .classList.remove("show");
+
+
+    document
+        .getElementById("bookingDrawer")
+        .classList.remove("show");
+
+}
+
+
+/* =========================
+   GUESTS
+========================= */
+
+function changeGuests(change) {
+
+    guests += change;
+
+    if(guests < 1)
+        guests = 1;
+
+    if(guests > 8)
+        guests = 8;
+
+
+    document
+        .getElementById("guestCount")
+        .textContent = guests;
+
+}
+
+
+/* =========================
+   CALCULATE BOOKING
+========================= */
+
+function calculateBooking() {
+
+    if(!selectedRoom)
+        return;
+
+
+    const checkIn =
+        document
+        .getElementById("drawerCheckIn")
+        .value;
+
+
+    const checkOut =
+        document
+        .getElementById("drawerCheckOut")
+        .value;
+
+
+    let nights = 1;
+
+
+    if(checkIn && checkOut) {
+
+        const start =
+            new Date(checkIn);
+
+        const end =
+            new Date(checkOut);
+
+
+        const difference =
+            end - start;
+
+
+        nights =
+            Math.ceil(
+                difference /
+                (1000 * 60 * 60 * 24)
+            );
+
+
+        if(nights < 1)
+            nights = 1;
+
+    }
+
+
+    currentNights = nights;
+
+
+    const roomTotal =
+        selectedRoom.price * nights;
+
+
+    const taxes =
+        Math.round(roomTotal * .12);
+
+
+    const total =
+        roomTotal + taxes;
+
+
+    document
+        .getElementById("roomPrice")
+        .textContent =
+        "₹" + roomTotal.toLocaleString();
+
+
+    document
+        .getElementById("nights")
+        .textContent =
+        nights;
+
+
+    document
+        .getElementById("taxes")
+        .textContent =
+        "₹" + taxes.toLocaleString();
+
+
+    document
+        .getElementById("totalPrice")
+        .textContent =
+        "₹" + total.toLocaleString();
+
+}
+
+
+/* =========================
+   CONFIRM BOOKING
+========================= */
+
+function confirmBooking() {
+
+    if(!selectedRoom) {
+
+        alert("Please select a room.");
+
+        return;
+
+    }
+
+
+    const bookingId =
+        Math.floor(
+            100000 +
+            Math.random() * 900000
+        );
+
+
+    const checkIn =
+        document
+        .getElementById("drawerCheckIn")
+        .value;
+
+
+    const checkOut =
+        document
+        .getElementById("drawerCheckOut")
+        .value;
+
+
+    document
+        .getElementById("bookingId")
+        .textContent =
+        bookingId;
+
+
+    document
+        .getElementById("confirmationDetails")
+        .innerHTML = `
+
+        <strong>
+            ${selectedRoom.name}
+        </strong>
+
+        <br>
+
+        ${selectedRoom.location}
+
+        <br>
+
+        ${checkIn || "Check-in"} →
+        ${checkOut || "Check-out"}
+
+        <br>
+
+        ${guests}
+        guest${guests > 1 ? "s" : ""}
+
+    `;
+
+
+    closeDrawer();
+
+
+    document
+        .getElementById("confirmationModal")
+        .classList.add("show");
+
+}
+
+
+/* =========================
+   CLOSE CONFIRMATION
+========================= */
+
+function closeConfirmation() {
+
+    document
+        .getElementById("confirmationModal")
+        .classList.remove("show");
+
+}
+
+</script>
+
+</body>
+</html>
